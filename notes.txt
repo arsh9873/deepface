@@ -1,0 +1,34 @@
+Modern face recognition pipelines consist of 4 common stages. These are detection, alignment, representation and verification.
+
+Stage 1 and 2: Detection and Alignment:
+There are several face detection solutions. OpenCV offers haar cascade and Single Shot Multibox Detector (SSD). Dlib offers Histogram of Oriented Gradients (HOG) and a CNN based Max-Margin Object Detection (MMOD) and finally Multi-task Cascaded Convolutional Networks (MTCNN) is a common solution for face detection.
+
+Alignment is easy if face and eyes detected already. Experiments show that applying face alignment increases the accuracy of model more than 1%. Unfortunately, neither opencv nor dlib offer face alignment as an out-of-box function.
+
+Here, retinaface is the cutting-edge face detection technology. It can even detect faces in the crowd and it finds facial landmarks including eye coordinates. That’s why, its alignment score is very high.
+
+Stage 2.5 Normalization
+Face detectors detect faces in a squared area. So, detected faces come with some noise such as background color. Here, dlib can find 68 facial landmarks. We can extract exact face and get rid of any noise in this way. This optional step is called as normalization in facial recognition.
+
+Stage 3: Representation
+Deep learning just appears in this representation stage. We will feed face images to a convolutional neural networks model but the task is here is not classification. We will use CNN models to find embeddings similar to autoencoders.
+
+The most popular face recognition models are VGG-Face, Google FaceNet, OpenFace and Facebook DeepFace.
+
+These models have different input and output shapes. For example, VGG-Face expects (224, 224, 3) shaped inputs and returns 2622 dimensional vector as output. On the other hand, Google FaceNet expexts (160, 160, 3) shaped inputs and return 128 dimensional array
+
+We’ve detected and aligned face images and fed them to a face recognition model in the previous steps. Now, we have vector representations for each image.
+
+VGG-Face representation has 2622 slots horizontally. Each slot is represented with different color and color meaning explained in the colorbar on the right.
+
+So, we will decide these two images are same person or not based on those vector representations instead of face images themselves.
+
+Stage 3: Verification
+We will compare vector representations of images. The easiest way to compare two vectors is to find the euclidean distance ,
+BTW, we can find cosine similarity value to compare vectors as well.
+
+As seen, face recognition is mainly based on comparing two images. We do not train a CNN model with multiple photos of identities. We just feed an image. That’s why, this concept is also called as one shot learning in the literature. Besides, some sources mention this technology as face verification instead of face recognition. It comes from verifying faces obviously.
+
+TODO
+Notice that face recognition has O(n) time complexity and this might be problematic for millions or billions level data. Herein, approximate nearest neighbor (a-nn) algorithm reduces time complexity dramatically. Spotify Annoy, Facebook Faiss and NMSLIB are amazing a-nn libraries. Besides, Elasticsearch wraps an NMSLIB and it comes with highly scalability. You should run deepface within those a-nn libraries if you have really large scale data base.
+
